@@ -1,0 +1,14 @@
+.env
+
+yarn.lock
+yarn-error.log
+node_modules/**/*
+
+notes.txt
+
+# macOS
+client_react/.DS_Store
+.idea/*
+*/.idea/*
+*.xml
+*.iml
