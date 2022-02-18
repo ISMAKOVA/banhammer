@@ -7,10 +7,10 @@ class ComplaintController {
             const {values} = req.body
             let results = []
             for(let i in values) {
-                const {mark, memeMarkId, reasonId, notes} = values[i]
-                const meme_mark = await Complaint.create({mark:mark, memeMarkId:memeMarkId,
+                const {mark, memeId, reasonId, notes} = values[i]
+                const complaint = await Complaint.create({mark:mark, memeId:memeId,
                     reasonId:reasonId, notes:notes})
-                results.push(meme_mark)
+                results.push(complaint)
             }
             return res.json({results})
         }
@@ -24,19 +24,19 @@ class ComplaintController {
 
     async getAll(req, res){
         try {
-        let {memeMarkId, reasonId} = req.query
+        let {memeId, reasonId} = req.query
         let complaints
-        if(!memeMarkId && !reasonId) {
+        if(!memeId && !reasonId) {
             complaints = await Complaint.findAll()
         }
-        if(memeMarkId && !reasonId) {
-            complaints = await Complaint.findAll({where: {memeMarkId:memeMarkId}})
+        if(memeId && !reasonId) {
+            complaints = await Complaint.findAll({where: {memeId:memeId}})
         }
-        if(!memeMarkId && reasonId) {
+        if(!memeId && reasonId) {
             complaints = await Complaint.findAll({where: {reasonId:reasonId}})
         }
-        if(memeMarkId && reasonId) {
-            complaints = await Complaint.findAll({where: {memeMarkId:memeMarkId, reasonId:reasonId}})
+        if(memeId && reasonId) {
+            complaints = await Complaint.findAll({where: {memeId:memeId, reasonId:reasonId}})
         }
         return res.json(complaints)
         }
@@ -56,9 +56,9 @@ class ComplaintController {
 
     async update(req, res) {
         try {
-            const {id, mark, memeMarkId, reasonId, notes} = req.body
+            const {id, mark, memeId, reasonId, notes} = req.body
             const complaint = await (await Complaint.findOne({where: {id:id}},))
-                .update({mark:mark, memeMarkId:memeMarkId, reasonId:reasonId, notes:notes},)
+                .update({mark:mark, memeId:memeId, reasonId:reasonId, notes:notes},)
             return res.json({complaint})
         } catch (e) {
             console.log(e);
