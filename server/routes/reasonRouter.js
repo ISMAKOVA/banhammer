@@ -1,10 +1,11 @@
 const Router = require('express')
 const router = new Router()
+const reasonController = require('../controllers/reasonController')
 
-router.post('/',)
-router.get('/',)
-router.get('/:id',)
-router.put('/',)
-router.delete('/',)
+router.post('/',reasonController.create)
+router.get('/', reasonController.getAll)
+router.get('/:id', reasonController.getOne)
+router.get('/inst/', reasonController.getAllInstitutions)
+router.delete('/', reasonController.delete)
 
 module.exports = router

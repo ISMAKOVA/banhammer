@@ -32,8 +32,8 @@ const Reason = sequelize.define('reason', {
 Meme.hasMany(Meme_Mark, {onDelete: 'CASCADE'})
 Meme_Mark.belongsTo(Meme, {onDelete: 'CASCADE'})
 
-Meme_Mark.hasMany(Complaint, {onDelete: 'CASCADE'})
-Complaint.belongsTo(Meme_Mark, {onDelete: 'CASCADE'})
+Meme.hasMany(Complaint, {onDelete: 'CASCADE'})
+Complaint.belongsTo(Meme, {onDelete: 'CASCADE'})
 
 Reason.hasMany(Complaint, {onDelete: 'CASCADE'})
 Complaint.belongsTo(Reason, {onDelete: 'CASCADE'})
