@@ -1,17 +1,13 @@
 const {Meme} = require('../models/models')
 const ApiError = require('../error/ApiError')
-const uuid = require('uuid')
-const path = require('path')
+const axios = require('axios')
 
 class MemeController {
     async create(req, res) {
         try {
-            const {vk_route, text} = req.body
-            const {images} = req.files
-            let fileName = uuid.v4() + '.jpg'
-            await images.mv(path.resolve(__dirname, '..', 'static', fileName))
+            const {image_url, vk_route, text} = req.body
             const meme = await Meme.create({
-                img: fileName,
+                img: image_url,
                 vk_route: vk_route,
                 text: text,
             })
@@ -42,17 +38,101 @@ class MemeController {
 
     async update(req, res) {
         try {
-        const {id, vk_route, text} = req.body
-        const {image} = req.files
-        let fileName = uuid.v4() + '.jpg'
-        await image.mv(path.resolve(__dirname, '..', 'static', fileName))
+        const {id, image_url, vk_route, text} = req.body
         const meme = await (await Meme.findOne({where: {id:id}},))
-                .update({img: fileName, vk_route: vk_route, text: text})
+                .update({img: image_url, vk_route: vk_route, text: text})
         return res.json({meme})
         } catch (e) {
             console.log(e);
             new ApiError(e.status, e.message)
         }
+    }
+    // post localhost:5000/api/meme/classifyPic
+    // body raw json {url: "..."}
+    async classifyPic(req, res){
+        try {
+        const {url} = req.body
+        let result
+        console.log(process.env.PICTURE_API + '/toxicity_py/api/picture')
+        await axios.get(process.env.PICTURE_API + '/toxicity_py/api/picture', {data: {url:
+            url}}).then(response => {
+            result = response.data
+        });
+        console.log(result)
+        return  res.json({
+            unoffensive: result[0].untoxic,
+            offensive: result[0].toxic})
+        } catch (e) {
+            console.log(e);
+            new ApiError(e.status, e.message)
+        }
+    }
+    // post localhost:5000/api/meme/scanPic
+    // body raw json {url: "..."}
+    async scanPic(req, res){
+        try {
+            const {url} = req.body
+            let result
+            console.log(process.env.PICTURE_API + '/toxicity_py/api/picture_text')
+            console.log(url)
+            await axios.get(process.env.PICTURE_API + '/toxicity_py/api/picture_text', {
+                data: {
+                    url:
+                    url
+                }
+            }).then(response => {
+                result = response.data
+            });
+            console.log(result)
+            return res.json({
+                text: result.text
+            })
+        }
+        catch {
+            return res.json({
+                text: "ОШИБКА ПРИ СКАНИРОВАНИИ"
+            })
+        }
+    }
+
+    // post localhost:5000/api/meme/classifyToxicText
+    // body raw json {text: "..."}
+    async classifyByToxicText(req, res){
+        try {
+        const {text} = req.body
+        let result
+        console.log(process.env.TOXIC_API + '/toxicity_py/api/messages', {messages: [text]})
+        await axios.get(process.env.TOXIC_API + '/toxicity_py/api/messages', {data:
+            {messages: [text, ""]}}).then(response => {
+            result = response.data
+        });
+        console.log(result)
+        return  res.json({
+            text: result[0].message,
+            toxic: result[0].toxic})
+    } catch (e) {
+        console.log(e);
+        new ApiError(e.status, e.message)
+    }
+    }
+
+    // post localhost:5000/api/meme/classifySomeText
+    // body raw json {text: "..."}
+    async classifyBySomeParamsText(req, res){
+        try {
+        const {text} = req.body
+        let result
+        console.log(process.env.TOXIC_API + '/toxicity_py/api/rude_feature_extraction')
+        await axios.post(process.env.TOXIC_API + '/toxicity_py/api/rude_feature_extraction', {comment: text}).then(response => {
+            result = response.data
+        });
+        return  res.json({
+            text: text,
+            proportion_rude_to_text: result})
+    } catch (e) {
+        console.log(e);
+        new ApiError(e.status, e.message)
+    }
     }
 
     async delete(req, res) {
