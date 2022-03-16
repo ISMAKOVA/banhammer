@@ -45,6 +45,14 @@ function column() {
         {
             field: "mark",
             title: "Отметка",
+        },
+        {
+            field: "toMark",
+            title: "Разметить",
+        },
+        {
+            field: "toComplain",
+            title: "Пожаловаться",
         }
     ]
 }

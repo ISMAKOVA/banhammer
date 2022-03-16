@@ -18,8 +18,8 @@ export class SystemPagesTemplate extends React.Component {
     state = {
         navigation: [
             {name: 'Общая таблица', href: 'main'},
-            {name: 'Добавить картинки', href: 'addPic'},
-            {name: 'Разметить картинки', href: 'markup'},
+            {name: 'Добавить мем', href: 'addPic'},
+            {name: 'Разметить мем', href: 'markup'},
         ],
         current: null,
     }
