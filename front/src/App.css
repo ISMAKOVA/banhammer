@@ -1,3 +1,49 @@
 .App-bg{
   background-color: rgb(241 245 249);
 }
+
+
+.k-pager-nav {
+  color: rgb(75, 85, 99);
+}
+.k-menu-link-text {
+  color: rgb(29, 78, 216);
+}
+.k-grid {
+  color: rgb(75, 85, 99);
+  border-color: rgba(75, 85, 99, 0.12);
+}
+.k-grid tr.k-alt {
+  background-color: rgba(29, 78, 216, 0.05);
+}
+
+.k-grid-header {
+  color: rgb(75, 85, 99);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-weight: bolder;
+}
+
+.k-grid-container {
+  color: rgb(75, 85, 99);
+}
+
+.k-pager-wrap {
+  color: rgb(75, 85, 99);
+}
+
+.grid-style {
+  color: rgb(75, 85, 99);
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+}
+.k-pager-numbers .k-link, .k-pager-numbers .k-link:link {
+  color: rgb(29, 78, 216);
+}
+
+.k-pager-numbers .k-link.k-state-selected, .k-pager-numbers .k-link:hover {
+  color: rgb(29, 78, 216);
+  background-color: rgba(29, 78, 216, 0.3);
+}
+.k-pager-numbers .k-link:focus, .k-pager-numbers .k-link.k-state-focus{
+  box-shadow: none ;
+}

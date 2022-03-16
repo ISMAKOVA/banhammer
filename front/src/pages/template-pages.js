@@ -34,7 +34,7 @@ export class SystemPagesTemplate extends React.Component {
 
     updateCurrent = () => {
         if (window.location.pathname === '/')
-            this.props.history.push('dashboard');
+            this.props.history.push('main');
         setTimeout(() => {
             this.state.navigation.forEach((nav) => {
                 if (window.location.pathname.slice(1).startsWith(nav.href)) {
