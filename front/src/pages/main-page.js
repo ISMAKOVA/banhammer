@@ -45,14 +45,6 @@ function column() {
         {
             field: "mark",
             title: "Отметка",
-        },
-        {
-            field: "toMark",
-            title: "Разметить",
-        },
-        {
-            field: "toComplain",
-            title: "Пожаловаться",
         }
     ]
 }
@@ -90,49 +82,49 @@ function rows(){
             mark: 1
         },
         {
-            ID: 1,
-            text: "Sadio Mane2",
-            link: "www.ff.com",
-            mark: 0
-        },
-        {
-            ID: 2,
-            text: "Sadio Mane3",
-            link: "www.ff.com",
-            mark: 0
-        },
-        {
-            ID: 3,
-            text: "Sadio Mane4",
-            link: "www.ff.com",
-            mark: 0
-        },
-        {
-            ID: 4,
+            ID: 5,
             text: "Sadio Mane5",
+            link: "www.ff.com",
+            mark: 0
+        },
+        {
+            ID: 6,
+            text: "Sadio Mane6",
+            link: "www.ff.com",
+            mark: 0
+        },
+        {
+            ID: 7,
+            text: "Sadio Mane7",
+            link: "www.ff.com",
+            mark: 0
+        },
+        {
+            ID: 8,
+            text: "Sadio Mane8",
             link: "www.ff.com",
             mark: 1
         },{
-            ID: 1,
-            text: "Sadio Mane2",
+            ID: 9,
+            text: "Sadio Mane9",
             link: "www.ff.com",
             mark: 0
         },
         {
-            ID: 2,
-            text: "Sadio Mane3",
+            ID: 10,
+            text: "Sadio Mane10",
             link: "www.ff.com",
             mark: 0
         },
         {
-            ID: 3,
-            text: "Sadio Mane4",
+            ID: 11,
+            text: "Sadio Mane11",
             link: "www.ff.com",
             mark: 0
         },
         {
-            ID: 4,
-            text: "Sadio Mane5",
+            ID: 12,
+            text: "Sadio Mane12",
             link: "www.ff.com",
             mark: 1
         },

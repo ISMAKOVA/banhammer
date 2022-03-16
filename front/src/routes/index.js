@@ -1,7 +1,7 @@
 import {ADD_PIC_ROUTE, MAIN_PAGE_ROUTE, MARK_UP_ROUTE} from "../utils/routeName";
 import MainPage from "../pages/main-page";
 import AddPicPage from "../pages/add-pic-page";
-import MarkUpPage from "../pages/mark-up-page";
+import MarkupShowForm from "../pages/markup-show-form";
 
 export const routes = [
     {
@@ -14,6 +14,6 @@ export const routes = [
     },
     {
         path: MARK_UP_ROUTE,
-        Component: MarkUpPage
+        Component: MarkupShowForm
     }
 ]

@@ -3,6 +3,7 @@ import * as PropTypes from "prop-types";
 import {Grid, GridColumn} from "@progress/kendo-react-grid";
 import {Menu, MenuItem} from "@progress/kendo-react-layout";
 import { Popup } from "@progress/kendo-react-popup";
+import ComplainDialog from "../pages/complain-dialog";
 
 class GridTableComponent extends React.Component {
 
@@ -105,8 +106,11 @@ class GridTableComponent extends React.Component {
             case "Перейти":
                 alert("go")
                 break;
+            case "Разметить":
+                alert("размететиь")
+                break;
             case "Пожаловаться":
-                alert("complain")
+                this.getComplainComponent();
                 break;
             default:
         }
@@ -114,6 +118,10 @@ class GridTableComponent extends React.Component {
             open: false,
         });
     };
+
+    getComplainComponent(){
+        return <ComplainDialog id={0} visible={true}/>;
+    }
 
     onPopupOpen = () => {
         debugger
@@ -140,13 +148,14 @@ class GridTableComponent extends React.Component {
                             style={{display: "inline-block"}}
                             onSelect={this.handleOnSelect}
                         >
-                            <MenuItem key={0} text="Перейти"/>
-                            <MenuItem key={1} text="Пожаловаться"/>
+                            <MenuItem  key={0} text="Перейти"/>
+                            <MenuItem key={1} text="Разметить"/>
+                            <MenuItem key={2} text="Пожаловаться"/>
                         </Menu>
                     </div>
                 </Popup>
                 <Grid
-                    data={this.state.data}
+                    //data={this.state.data}
                     rowRender={this.rowRender}
                     className="h-full rounded-2xl overflow-hidden shadow-2xl shadow-blue-700/10"
                     skip={this.state.skip}
@@ -154,13 +163,14 @@ class GridTableComponent extends React.Component {
                     total={this.state.data.length}
                     pageable={true}
                     dataItemKey={'ID'}
+                    selectedField={'SELECTION_KEY'}
                     selectable={{enabled: true, mode: 'single'}}
                     onSelectionChange={this.onSelectionChange}
                     navigatable={true}
-                    // data={this.state.data.slice(
-                    //     this.state.skip,
-                    //     this.state.take + this.state.skip
-                    // ).map(item=> ({...item,SELECTION_KEY: this.state.selected?.ID===item.ID}))}
+                    data={this.state.data.slice(
+                        this.state.skip,
+                        this.state.take + this.state.skip
+                    ).map(item=> ({...item,SELECTION_KEY: this.state.selected?.ID===item.ID}))}
 
                     onPageChange={this.pageChange}>
                     {this.props.columns.map(col => {
