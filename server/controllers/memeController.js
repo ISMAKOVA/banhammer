@@ -1,6 +1,7 @@
 const {Meme} = require('../models/models')
 const ApiError = require('../error/ApiError')
 const axios = require('axios')
+const easyvk = require('easyvk')
 
 class MemeController {
     async create(req, res) {
@@ -47,6 +48,7 @@ class MemeController {
             new ApiError(e.status, e.message)
         }
     }
+
     // post localhost:5000/api/meme/classifyPic
     // body raw json {url: "..."}
     async classifyPic(req, res){
@@ -67,6 +69,7 @@ class MemeController {
             new ApiError(e.status, e.message)
         }
     }
+
     // post localhost:5000/api/meme/scanPic
     // body raw json {url: "..."}
     async scanPic(req, res){
@@ -133,6 +136,38 @@ class MemeController {
         console.log(e);
         new ApiError(e.status, e.message)
     }
+    }
+
+    // post localhost:5000/api/meme/groupVK
+    // body raw json {"vkRoute":"1"}
+    async VkGroupsData(req, res){
+        try {
+            const {vkRoute} = req.body
+            let result
+
+            let vk = easyvk({
+                token: process.env.APP_TOKEN
+            })
+            vk.then(vk => result = vk.call('groups.getById', {group_ids:vkRoute}, 'get').then(a => {return res.json(a[0])}))
+        } catch (e) {
+            console.log(e);
+            new ApiError(e.status, e.message)
+        }
+    }
+
+    // post localhost:5000/api/meme/userVK
+    // body raw json {"vkRoute":"1"}
+    async VkUsersData(req, res){
+        try {
+            const {vkRoute} = req.body
+            let result
+            let vk = easyvk({
+                token: process.env.APP_TOKEN
+            })
+            vk.then(vk => result = vk.call('users.get', {user_ids:vkRoute}, 'get').then(a => {return res.json(a[0])}))
+        } catch (e) {
+            new ApiError(e.status, e.message)
+        }
     }
 
     async delete(req, res) {

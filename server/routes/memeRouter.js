@@ -9,6 +9,8 @@ router.post('/classifyToxicText', memeController.classifyByToxicText)
 router.post('/classifySomeText', memeController.classifyBySomeParamsText)
 router.post('/classifyPic', memeController.classifyPic)
 router.post('/scanPic', memeController.scanPic)
+router.post('/userVK', memeController.VkUsersData)
+router.post('/groupVK', memeController.VkGroupsData)
 router.put('/', memeController.update)
 router.delete('/', memeController.delete)
 

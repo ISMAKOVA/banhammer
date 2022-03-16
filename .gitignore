@@ -12,3 +12,4 @@ client_react/.DS_Store
 */.idea/*
 *.xml
 *.iml
+server/vksession
