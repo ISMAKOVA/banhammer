@@ -66,15 +66,10 @@ class ReasonController {
 
     async delete(req, res) {
         try {
-            const {values} = req.body
-            let results = []
-            for (let i in values) {
-                const {id} = values[i]
+            const {id} = req.body
                 const rsn = await (await Reason.findOne({where: {id}},))
                     .destroy()
-                results.push(rsn)
-            }
-            return res.json({results})
+            return res.json({rsn})
         } catch (e) {
             console.log(e);
             new ApiError(e.status, e.message)

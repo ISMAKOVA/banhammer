@@ -4,15 +4,10 @@ const ApiError = require('../error/ApiError')
 class ComplaintController {
     async create(req, res){
         try {
-            const {values} = req.body
-            let results = []
-            for(let i in values) {
-                const {mark, memeId, reasonId, notes} = values[i]
-                const complaint = await Complaint.create({mark:mark, memeId:memeId,
+            const {memeId, reasonId, notes} = req.body
+            const complaint = await Complaint.create({ memeId:memeId,
                     reasonId:reasonId, notes:notes})
-                results.push(complaint)
-            }
-            return res.json({results})
+            return res.json({complaint})
         }
         catch (e) {
             console.log(e);
@@ -56,9 +51,10 @@ class ComplaintController {
 
     async update(req, res) {
         try {
-            const {id, mark, memeId, reasonId, notes} = req.body
+            const {id} = req.params
+            const { memeId, reasonId, notes} = req.body
             const complaint = await (await Complaint.findOne({where: {id:id}},))
-                .update({mark:mark, memeId:memeId, reasonId:reasonId, notes:notes},)
+                .update({memeId:memeId, reasonId:reasonId, notes:notes},)
             return res.json({complaint})
         } catch (e) {
             console.log(e);

@@ -39,7 +39,8 @@ class MemeController {
 
     async update(req, res) {
         try {
-        const {id, image_url, vk_route, text} = req.body
+            const {id} = req.params
+        const {image_url, vk_route, text} = req.body
         const meme = await (await Meme.findOne({where: {id:id}},))
                 .update({img: image_url, vk_route: vk_route, text: text})
         return res.json({meme})
