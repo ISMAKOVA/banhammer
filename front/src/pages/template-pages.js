@@ -19,7 +19,6 @@ export class SystemPagesTemplate extends React.Component {
         navigation: [
             {name: 'Общая таблица', href: 'main'},
             {name: 'Добавить мем', href: 'addPic'},
-            {name: 'Разметить мем', href: 'markup'},
         ],
         current: null,
     }

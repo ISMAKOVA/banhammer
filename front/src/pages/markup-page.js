@@ -83,7 +83,7 @@ function MarkupPage() {
                             value={text}
                             onChange={e => setText(e.target.value)}
                             className="w-full rounded-3xl bg-gray-200 text-sm px-6 py-6 resize-none hover:resize"
-                            placeholder="Текст" readOnly="true">
+                            placeholder="Текст" >
                                 </textarea>
                     </div>
 

@@ -38,9 +38,9 @@ class ReasonController {
         let results = []
         for (let c in rsn) {
             results.push({
+                id: rsn[c].id,
                 reason: rsn[c].reason,
-                institution_item: rsn[c].institution_item,
-                institution: this._institutions[rsn[c].institution_item]
+                institution_item: rsn[c].institution_item
             })
         }
         return res.json(results)
