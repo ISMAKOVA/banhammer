@@ -12,23 +12,23 @@ class MainPage extends React.Component{
         super(props);
 
         this.state = {
-           // table: rows(),
+            table: rows(),
             columns: column()
         }
     }
 
-    componentDidMount() {
-       void this.load();
-    }
-
-    async load(){
-        let memes = await getAllMemes();
-        // let values = Object.keys(memes).map(function(key){
-        //     return memes[key];
-        // });
-        this.setState({table: memes});
-        console.log(memes)
-    }
+    // componentDidMount() {
+    //    void this.load();
+    // }
+    //
+    // async load(){
+    //     let memes = await getAllMemes();
+    //     // let values = Object.keys(memes).map(function(key){
+    //     //     return memes[key];
+    //     // });
+    //     this.setState({table: memes});
+    //     console.log(memes)
+    // }
 
     render() {
         return(
@@ -70,81 +70,68 @@ function column() {
 function rows(){
     return [
         {
-            ID: 0,
-            text: "Sadio Mane1",
-            link: "www.ff.com",
-            mark: 0
+            id: 0,
+            img: "Sadio Mane1",
+            text: "www.ff.com",
+            vk_route: "asdfasdfaadsfa",
+            createdAt: "adsf",
+            updatedAt:"adsfsdf"
         },
         {
-            ID: 1,
-            text: "Sadio Mane2",
-            link: "www.ff.com",
-            mark: 0
+            id: 1,
+            img: "Sadio Mane1",
+            text: "www.ff.com",
+            vk_route: "asdfasdfaadsfa",
+            createdAt: "adsf",
+            updatedAt:"adsfsdf"
         },
         {
-            ID: 2,
-            text: "Sadio Mane3",
-            link: "www.ff.com",
-            mark: 0
+            id: 2,
+            img: "Sadio Mane1",
+            text: "www.ff.com",
+            vk_route: "asdfasdfaadsfa",
+            createdAt: "adsf",
+            updatedAt:"adsfsdf"
         },
         {
-            ID: 3,
-            text: "Sadio Mane4",
-            link: "www.ff.com",
-            mark: 0
+            id: 3,
+            img: "Sadio Mane1",
+            text: "www.ff.com",
+            vk_route: "asdfasdfaadsfa",
+            createdAt: "adsf",
+            updatedAt:"adsfsdf"
         },
         {
-            ID: 4,
-            text: "Sadio Mane5",
-            link: "www.ff.com",
-            mark: 1
+            id: 4,
+            img: "Sadio Mane1",
+            text: "www.ff.com",
+            vk_route: "asdfasdfaadsfa",
+            createdAt: "adsf",
+            updatedAt:"adsfsdf"
         },
         {
-            ID: 5,
-            text: "Sadio Mane5",
-            link: "www.ff.com",
-            mark: 0
+            id: 5,
+            img: "Sadio Mane1",
+            text: "www.ff.com",
+            vk_route: "asdfasdfaadsfa",
+            createdAt: "adsf",
+            updatedAt:"adsfsdf"
         },
         {
-            ID: 6,
-            text: "Sadio Mane6",
-            link: "www.ff.com",
-            mark: 0
+            id: 6,
+            img: "Sadio Mane1",
+            text: "www.ff.com",
+            vk_route: "asdfasdfaadsfa",
+            createdAt: "adsf",
+            updatedAt:"adsfsdf"
         },
         {
-            ID: 7,
-            text: "Sadio Mane7",
-            link: "www.ff.com",
-            mark: 0
-        },
-        {
-            ID: 8,
-            text: "Sadio Mane8",
-            link: "www.ff.com",
-            mark: 1
-        },{
-            ID: 9,
-            text: "Sadio Mane9",
-            link: "www.ff.com",
-            mark: 0
-        },
-        {
-            ID: 10,
-            text: "Sadio Mane10",
-            link: "www.ff.com",
-            mark: 0
-        },
-        {
-            ID: 11,
-            text: "Sadio Mane11",
-            link: "www.ff.com",
-            mark: 0
-        },
-        {
-            ID: 12,
-            text: "Sadio Mane12",
-            link: "www.ff.com",
-            mark: 1
+            id: 7,
+            img: "Sadio Mane1",
+            text: "www.ff.com",
+            vk_route: "asdfasdfaadsfa",
+            createdAt: "adsf",
+            updatedAt:"adsfsdf"
         },
 
     ]

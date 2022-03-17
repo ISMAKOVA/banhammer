@@ -68,19 +68,13 @@ class GridTableComponent extends React.Component {
     handleContextMenuOpen = (e, dataItem) => {
         this.dataItem = dataItem;
         this.dataItemIndex = this.state.data.findIndex(
-            (p) => p.ID === this.dataItem.ID
+            (p) => p.id === this.dataItem.id
         );
         this.offset = { left: e.clientX, top: e.clientY };
         this.setState({
             open: true,
         });
     };
-
-    onSelectionChange = (e) => {
-        this.setState({selected: !e.ctrlKey ? this.state.data[e.endRowIndex] : null})
-    }
-
-
 
     onFocusHandler = () => {
         clearTimeout(this.blurTimeoutRef);
@@ -126,6 +120,10 @@ class GridTableComponent extends React.Component {
         this.menuWrapperRef.querySelector("[tabindex]").focus();
     };
 
+    onSelectionChange = (e) => {
+        this.setState({selected: !e.ctrlKey ? this.state.data[e.endRowIndex] : null})
+    }
+
     render() {
         return (
             <div>
@@ -145,9 +143,9 @@ class GridTableComponent extends React.Component {
                             vertical={true}
                             style={{display: "inline-block"}}
                         >
-                            <MenuItem  key={0} text="Перейти" url={"/showMeme/0"}/>
-                            <MenuItem key={1} text="Разметить" url={"/markup/0"}/>
-                            <MenuItem key={2} text="Пожаловаться" url={"/complain/0"}/>
+                            <MenuItem  key={0} text="Перейти" url={"/showMeme/"+ this.state.selected?.id}/>
+                            <MenuItem key={1} text="Разметить" url={"/markup/"+ this.state.selected?.id}/>
+                            <MenuItem key={2} text="Пожаловаться" url={"/complain/0"+ this.state.selected?.id}/>
                         </Menu>
                     </div>
                 </Popup>
@@ -166,7 +164,7 @@ class GridTableComponent extends React.Component {
                     data={this.state.data.slice(
                         this.state.skip,
                         this.state.take + this.state.skip
-                    ).map(item=> ({...item,SELECTION_KEY: this.state.selected?.ID===item.ID}))}
+                    ).map(item=> ({...item,SELECTION_KEY: this.state.selected?.id===item.id}))}
 
                     onPageChange={this.pageChange}>
                     {this.props.columns.map(col => {

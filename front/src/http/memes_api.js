@@ -17,7 +17,7 @@ export const getOneMeme = async (memeId) =>{
 }
 
 export const updateMeme = async (id, img, vk_route, text) =>{
-    const {data} = await $host.put('/api/meme/'+id, {img:img, vk_route:vk_route, text:text});
+    const {data} = await $host.put('/api/meme/', {id: id, image_url:img, vk_route:vk_route, text:text});
     return data;
 }
 

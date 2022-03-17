@@ -12,6 +12,6 @@ router.post('/scanPic', memeController.scanPic)
 router.post('/userVK', memeController.VkUsersData)
 router.post('/groupVK', memeController.VkGroupsData)
 router.put('/', memeController.update)
-router.delete('/', memeController.delete)
+router.delete('/:id', memeController.delete)
 
 module.exports = router

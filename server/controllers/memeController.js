@@ -39,8 +39,7 @@ class MemeController {
 
     async update(req, res) {
         try {
-            const {id} = req.params
-        const {image_url, vk_route, text} = req.body
+        const {id, image_url, vk_route, text} = req.body
         const meme = await (await Meme.findOne({where: {id:id}},))
                 .update({img: image_url, vk_route: vk_route, text: text})
         return res.json({meme})
@@ -173,15 +172,11 @@ class MemeController {
 
     async delete(req, res) {
         try {
-        const {values} = req.body
-        let results = []
-        for (let i in values) {
-            const {id} = values[i]
-            const meme = await (await Meme.findOne({where: {id}},))
-                .destroy()
-            results.push(meme)
-        }
-        return res.json({results})
+            const {id} = req.params;
+            const meme = await (await Meme.findOne({where: {id:id}},))
+                .destroy();
+
+        return res.json({meme})
         } catch (e) {
             console.log(e);
             new ApiError(e.status, e.message)
