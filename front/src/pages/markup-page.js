@@ -1,10 +1,26 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
 import {useParams} from "react-router-dom";
+import {classifyBySomeText, classifyByToxicText, classifyPicInMeme, getOneMeme} from "../http/memes_api";
 
 function MarkupPage() {
     let {id} = useParams();
-    console.log(id);
+    const [img, setImg] = useState('');
+    const [text, setText] = useState('');
+    const [mark, setMark] = useState('');
+    
+    useEffect(async ()=>{
+        const meme = await getOneMeme(id);
+        setImg(meme?.img);
+        setText(meme?.text);
+    },[])
+
+    const autoClassification = async () => {
+        const mark = await classifyByToxicText(text);
+        const coefficient = await classifyBySomeText(text);
+        const offensiveness = await classifyPicInMeme(img);
+
+    }
 
     const marks = [
         {id: 0, label: "Токсично", enLabel: "toxic"},
@@ -18,33 +34,35 @@ function MarkupPage() {
     return (
         <div className="">
             <div className="p-10">
-                <div
-                    className="px-6 py-4 font-medium text-xl text-gray-700">Оценить мем {id}</div>
-                <div
-                    className="max-w-lg rounded-3xl overflow-hidden shadow-2xl shadow-blue-700/10 bg-white/80 pt-2">
-                    <div className="px-8 pt-6">
-                        <div
-                            className="w-full bg-gradient-to-r from-emerald-500	to-pink-700 rounded-3xl text-center text-white"
-                            style={{height: "300px", paddingTop: "145px"}}>
-                            Картинка
-                        </div>
+                <div className="px-6 py-4 font-medium text-xl text-gray-700">Оценить мем {id}</div>
+                <div className="max-w-lg rounded-3xl overflow-hidden shadow-2xl shadow-blue-700/10 bg-white/80 pt-2">
+                    <div className="px-8 pt-4">
+                        {!img ?
+                            <div
+                                className="w-full bg-gradient-to-r from-emerald-500	to-pink-700 rounded-3xl text-center text-white"
+                                style={{height: "300px", paddingTop: "145px"}}> Картинка
+                            </div> :
+                            <img className="w-full" src={img} alt={"Картинка"} height={300}/>}
                     </div>
-                    <div className="px-8 py-3">
+                    <div className="px-8 py-4">
                         <div className="text-sm mb-2 text-gray-400">Текст мема</div>
                         <textarea
-                            className="w-5/6 rounded-3xl bg-gray-200 text-sm px-6 py-4 resize-none hover:resize"
+                            value={text}
+                            onChange={e => setText(e.target.value)}
+                            className="w-full rounded-3xl bg-gray-200 text-sm px-6 py-6 resize-none hover:resize"
                             placeholder="Текст" readOnly="true">
                                 </textarea>
                     </div>
 
                     <div>
-                        <div className="px-8 py-3">
+                        <div className="px-8 py-4">
                             <div className="text-sm mb-2 text-gray-400">Классифицировать мем с помощью ИИ</div>
                             <button
+                                onClick={autoClassification}
                                 className="rounded-full bg-blue-700 hover:bg-blue-800 text-neutral-50 px-4 py-1.5">Автоклассификация
                             </button>
                         </div>
-                        <div className="px-8 py-3">
+                        <div className="px-8 py-4">
                             <div className="text-sm mb-2 text-gray-400">Результат</div>
                             <div className="flex flex-row !k-gap-x-6">
                                 <div>

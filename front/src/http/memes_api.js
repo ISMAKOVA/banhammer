@@ -1,7 +1,7 @@
 import {$host} from "./index"
 
-export const createMeme = async (img, vk_route, text) =>{
-    const {data} = await $host.post('/api/meme/', {img:img, vk_route:vk_route, text:text});
+export const createMeme = async (image_url, vk_route, text) =>{
+    const {data} = await $host.post('/api/meme/', {image_url:image_url, vk_route:vk_route, text:text});
     return data;
 }
 
@@ -42,7 +42,7 @@ export const classifyBySomeText = async (text) =>{
 }
 
 export const userVK = async (vkRoute) =>{
-    const {data} = await $host.post('/api/meme/classifySomeText', {vkRoute:vkRoute});
+    const {data} = await $host.post('/api/meme/userVK', {vkRoute:vkRoute});
     return data;
 }
 

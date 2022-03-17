@@ -103,7 +103,7 @@ export class SystemPagesTemplate extends React.Component {
                         </div>
                     </header>
                     <main className='h-full bg-neomorphic-blue mb-auto'>
-                        <div className="h-full max-w-7xl mx-auto py-4 sm:px-6 lg:px-8">
+                        <div className="h-full max-w-7xl mx-auto py-2 sm:px-6 lg:px-8">
                             {this.props.children}
                         </div>
                     </main>

@@ -4,7 +4,6 @@ import {Grid, GridColumn} from "@progress/kendo-react-grid";
 import {Menu, MenuItem} from "@progress/kendo-react-layout";
 import { Popup } from "@progress/kendo-react-popup";
 import ComplainPage from "../pages/complain-page";
-import {Link} from "react-router-dom";
 class GridTableComponent extends React.Component {
 
     constructor(props) {
@@ -145,7 +144,6 @@ class GridTableComponent extends React.Component {
                         <Menu
                             vertical={true}
                             style={{display: "inline-block"}}
-                            // onSelect={this.handleOnSelect}
                         >
                             <MenuItem  key={0} text="Перейти" url={"/showMeme/0"}/>
                             <MenuItem key={1} text="Разметить" url={"/markup/0"}/>
@@ -154,7 +152,6 @@ class GridTableComponent extends React.Component {
                     </div>
                 </Popup>
                 <Grid
-                    //data={this.state.data}
                     rowRender={this.rowRender}
                     className="h-full rounded-2xl overflow-hidden shadow-2xl shadow-blue-700/10"
                     skip={this.state.skip}

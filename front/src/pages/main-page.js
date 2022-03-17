@@ -22,9 +22,15 @@ class MainPage extends React.Component{
     }
 
     async load(){
+        debugger
         let memes = await getAllMemes();
+        // let values = Object.keys(memes).map(function(key){
+        //     return memes[key];
+        // });
         this.setState({table: memes});
+        console.log(memes)
     }
+
     render() {
         return(
             <div>

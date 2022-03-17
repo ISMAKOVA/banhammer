@@ -1,67 +1,122 @@
-import React from "react";
+import React, {useState} from "react";
+import {createMeme, scanPicInMeme, userVK} from "../http/memes_api";
+import { useNavigate } from 'react-router-dom';
 
-class AddPicPage extends React.Component {
+function AddPicPage() {
+    const [url, setUrl] = useState('');
+    const [text, setText] = useState('');
+    const [vkRoute, setVkRoute] = useState('');
+    const [textVk, setTextVk] = useState('');
+    const [spinner, setSpinner] = useState(false);
+    const navigate = useNavigate();
 
-    render() {
-        return (
-            <div className="">
-                <div className="p-10">
-                    <div className="px-6 py-4 font-medium text-xl text-gray-700">Добавить мем</div>
-                    <div className="max-w-lg rounded-3xl overflow-hidden shadow-2xl shadow-blue-700/10 bg-white/80 pt-2">
+    // const [rightUrl, setRightUrl] = useState('');
+    //
+    // const onUrlChange = (value) => {
+    //     debugger
+    //     setUrl(value);
+    //     const rgx = new RegExp('/(href|src)\s*=\s*"([^\s]+\/\/[^\/]+.\/[^\s]+\.(jpg|jpeg|png|gif|bmp))/ixu');
+    //     const result = rgx.test(value);
+    //     if (result){
+    //        setRightUrl(value)
+    //     }
+    // }
+    const getTextFromImg = async () => {
+        setSpinner(true);
+        setText('');
+        const text = await scanPicInMeme(url);
+        setText(text?.text);
+        setSpinner(false);
+    }
 
-                        <div className="px-8 pt-4">
-                            <div className="text-sm mb-2 text-gray-400">URL мема</div>
-                            <div className="flex content-center">
-                                <input
-                                    className="grow rounded-3xl bg-gray-200 text-sm px-6 resize-none hover:resize mr-2"
-                                    placeholder="Мем URL">
-                                </input>
-                                <button
-                                    className="rounded-full bg-blue-700 hover:bg-blue-800 text-neutral-50 px-4 py-1.5 ">Получить картинку
-                                </button>
-                            </div>
+    const getVkRouteValue = async () => {
+        const value = await userVK(vkRoute);
+        const text ='id: '+ value?.id+ ', '+ value?.last_name + ' '+ value?.first_name;
+        setTextVk(text);
+    }
+    const onSave = async () => {
+        const response = await createMeme(url, textVk, text);
+        navigate("/main");
+    }
 
-                        <div className="px-8 pt-6">
-                            <div className="w-full bg-gradient-to-r from-blue-700 to-indigo-500 rounded-3xl text-center text-white" style={{height: "300px", paddingTop: "145px"}}>
-                            Картинка</div>
+    return (
+        <div className="">
+            <div className="p-10">
+                <div className="px-6 py-4 font-medium text-xl text-gray-700">Добавить мем</div>
+                <div className="max-w-lg rounded-3xl overflow-hidden shadow-2xl shadow-blue-700/10 bg-white/80 pt-2">
+
+                    <div className="px-8 pt-4">
+                        <div className="text-sm mb-2 text-gray-500">URL мема</div>
+                        <input
+                            value={url}
+                            onChange={e => setUrl(e.target.value)}
+                            className="w-full grow rounded-3xl bg-gray-200 text-sm px-6 py-2 resize-none hover:resize mr-2 box-border"
+                            placeholder="Мем URL">
+                        </input>
+                    </div>
+                    <div className="px-8 pt-4">
+                        {!url ?
+                            <div
+                                className="w-full bg-gradient-to-r from-blue-700 to-indigo-500 rounded-3xl text-center text-white"
+                                style={{height: "300px", paddingTop: "145px"}}> Картинка
+                            </div> :
+                            <img className="w-full" src={url} alt={"Картинка"} height={300}/>}
+                    </div>
+                    <div className="px-8 pt-4">
+                        <button
+                            onClick={getTextFromImg}
+                            className="w-full rounded-full hover:bg-blue-800 bg-gradient-to-r from-blue-700 to-indigo-500  text-neutral-50 px-4 py-1.5 ">
+                            Получить текст с картинки
+                        </button>
+                    </div>
+                    {spinner?
+                    <div className="px-8 pt-4">
+                        <div className=" flex justify-center items-center">
+                            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-700"></div>
                         </div>
-                        </div>
-                        <div className="px-8 pt-2">
-                            <div className="text-sm mb-2 text-gray-400">Текст мема</div>
-                            <textarea
-                                className="w-full rounded-3xl bg-gray-200 text-sm px-6 py-4 resize-none hover:resize"
-                                placeholder="Текст">
+                    </div>:null}
+                    <div className="px-8 pt-4">
+                        <div className="text-sm mb-2 text-gray-500">Текст мема</div>
+                        <textarea
+                            onChange={e => setText(e.target.value)}
+                            className="w-full rounded-3xl bg-gray-200 text-sm px-6 py-6 resize-none hover:resize"
+                            placeholder="Текст" value={text}>
                                 </textarea>
-                        </div>
-                        <div className="px-8 pt-2">
-                            <div className="text-sm mb-2 text-gray-400">VK route</div>
-                            <div className="flex content-center">
-                                <input
-                                    className="grow rounded-3xl bg-gray-200 text-sm px-6 resize-none hover:resize mr-2"
-                                    placeholder="Route">
-                                </input>
-                                <button
-                                    className="rounded-full bg-blue-700 hover:bg-blue-800 text-neutral-50 px-4 py-1.5 w-32 ">Получить
-                                </button>
-                            </div>
-                        </div>
-                        <div className="px-8 pt-4">
-                            <div className="text-sm mb-2 text-gray-400">Полученные данные из VK</div>
-                            <div className="flex content-center">
-                                <p className="text-justify text-gray-400">So I started to walk into the water. I won't lie to you boys, I was terrified. But I pressed on, and as I made my way past the breakers a strange calm came over me.</p>
-                            </div>
-                        </div>
+                    </div>
 
-                        <div className="flex flex-row-reverse items-center px-8 py-6">
+                    <div className="px-8 pt-4">
+                        <div className="text-sm mb-2 text-gray-500">VK route</div>
+                        <div className="flex content-center flex-wrap gap-2 justify-items-stretch">
+                            <input
+                                value={vkRoute}
+                                onChange={e => setVkRoute(e.target.value)}
+                                className="grow rounded-3xl bg-gray-200 text-sm px-6 py-2  resize-none hover:resize"
+                                placeholder="Route">
+                            </input>
                             <button
-                                className="rounded-full bg-blue-700 hover:bg-blue-800 text-neutral-50 px-4 py-1.5 w-32">Сохранить
+                                onClick={getVkRouteValue}
+                                className="rounded-full bg-blue-700 hover:bg-blue-800 text-neutral-50 px-4 py-1.5 w-32 ">Получить
                             </button>
                         </div>
                     </div>
+                    {textVk?
+                    <div className="px-8 pt-4">
+                        <div className="text-sm mb-2 text-gray-500">Полученные данные из VK</div>
+                        <div className="flex content-center">
+                            <p className="text-justify text-gray-500">{textVk}</p>
+                        </div>
+                    </div>: null}
+
+                    <div className="flex flex-row-reverse items-center px-8 py-6">
+                        <button
+                            onClick={onSave}
+                            className="rounded-full bg-blue-700 hover:bg-blue-800 text-neutral-50 px-4 py-1.5 w-32">Сохранить
+                        </button>
+                    </div>
                 </div>
             </div>
-        )
-    }
+        </div>
+    )
 }
 
 export default AddPicPage;
