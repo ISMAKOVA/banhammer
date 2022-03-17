@@ -32,12 +32,17 @@ export const scanPicInMeme = async (img) =>{
 }
 
 export const classifyByToxicText = async (text) =>{
-    const {data} = await $host.post('/api/meme/scanPic', {text:text});
+    const {data} = await $host.post('/api/meme/classifyToxicText', {text:text});
     return data;
 }
 
 export const classifyBySomeText = async (text) =>{
-    const {data} = await $host.post('/api/meme/scanPic', {text:text});
+    const {data} = await $host.post('/api/meme/classifySomeText', {text:text});
+    return data;
+}
+
+export const userVK = async (vkRoute) =>{
+    const {data} = await $host.post('/api/meme/classifySomeText', {vkRoute:vkRoute});
     return data;
 }
 
