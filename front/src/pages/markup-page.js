@@ -1,35 +1,68 @@
 import React, {useEffect, useState} from "react";
 import * as PropTypes from "prop-types";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {classifyBySomeText, classifyByToxicText, classifyPicInMeme, getOneMeme} from "../http/memes_api";
+import {createMemeMark} from "../http/memes_marks_api";
 
 function MarkupPage() {
     let {id} = useParams();
     const [img, setImg] = useState('');
     const [text, setText] = useState('');
-    const [mark, setMark] = useState('');
-    
-    useEffect(async ()=>{
+    const [spinner, setSpinner] = useState(false);
+
+    const [toxic, setToxic] = useState(0);
+    const [offensive, setOffensive] = useState(0);
+    const [unoffensive, setUnoffensive] = useState(0);
+    const [coefficient, setCoefficient] = useState(0);
+    const [isTotalResultToxic, setIsTotalResultToxic] = useState(false);
+    const navigate = useNavigate();
+
+    useEffect(async () => {
         const meme = await getOneMeme(id);
         setImg(meme?.img);
         setText(meme?.text);
-    },[])
+    }, [])
 
     const autoClassification = async () => {
-        const mark = await classifyByToxicText(text);
+        setSpinner(true);
+        const toxic = await classifyByToxicText(text);
         const coefficient = await classifyBySomeText(text);
         const offensiveness = await classifyPicInMeme(img);
+        setToxic(parseFloat(toxic.toxic));
+        setOffensive(parseFloat(offensiveness.offensive)/100);
+        setUnoffensive(parseFloat(offensiveness.unoffensive)/100);
+        setCoefficient(parseFloat(coefficient.proportion_rude_to_text));
 
+        setIsTotalResultToxic((Math.round(parseInt(toxic.toxic)) + Math.round(parseInt(offensiveness.offensive)/100)
+            + parseInt(coefficient.proportion_rude_to_text)) > 1.5);
+
+        setSpinner(false);
+    }
+    const createRadioButton = (id, label, name, checked = false, disabled = true) => {
+        return <div className="form-check">
+            <input
+                disabled={disabled}
+                checked={checked}
+                className="form-check-input appearance-none rounded-full h-4 w-4 border
+                                                border-gray-300 bg-white checked:bg-blue-700 checked:border-blue-700
+                                                focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat
+                                                bg-center bg-contain float-left mr-2 cursor-pointer"
+                type="radio" name={name} id={id}/>
+            <label className="form-check-label inline-block text-gray-800"
+                   htmlFor={id}>
+                {label}
+            </label>
+        </div>
     }
 
-    const marks = [
-        {id: 0, label: "Токсично", enLabel: "toxic"},
-        {id: 1, label: "Нетоксично", enLabel: "no_toxic"}
-    ]
-    const marks2 = [
-        {id: 0, label: "Агрессивно", enLabel: "anger_issues"},
-        {id: 1, label: "Неагрессивно", enLabel: "no_anger_issues"}
-    ]
+    const onBanClick = async () => {
+        const save = await createMemeMark(1, id);
+        navigate("/main");
+    }
+    const onNotBanClick = async () => {
+        const save = await createMemeMark(0, id);
+        navigate("/main");
+    }
 
     return (
         <div className="">
@@ -57,60 +90,79 @@ function MarkupPage() {
                     <div>
                         <div className="px-8 py-4">
                             <div className="text-sm mb-2 text-gray-400">Классифицировать мем с помощью ИИ</div>
-                            <button
-                                onClick={autoClassification}
-                                className="rounded-full bg-blue-700 hover:bg-blue-800 text-neutral-50 px-4 py-1.5">Автоклассификация
-                            </button>
+                            <div className="flex flex-row gap-2">
+                                <button
+                                    onClick={autoClassification}
+                                    className="rounded-full bg-blue-700 hover:bg-blue-800 text-neutral-50 px-4 py-1.5">Автоклассификация
+                                </button>
+                                {spinner ?
+                                    <div className=" flex justify-center items-center">
+                                        <div
+                                            className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-700"></div>
+                                    </div> : null}
+                            </div>
+
                         </div>
                         <div className="px-8 py-4">
                             <div className="text-sm mb-2 text-gray-400">Результат</div>
                             <div className="flex flex-row !k-gap-x-6">
-                                <div>
-                                    {marks.map(mark =>
-                                        <div className="form-check">
-                                            <input
-                                                disabled={true}
-                                                className="form-check-input appearance-none rounded-full h-4 w-4 border
-                                                border-gray-300 bg-white checked:bg-blue-700 checked:border-blue-700
-                                                focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat
-                                                bg-center bg-contain float-left mr-2 cursor-pointer"
-                                                type="radio" name="radio" id={mark.id}/>
-                                            <label className="form-check-label inline-block text-gray-800"
-                                                   htmlFor={mark.id}>
-                                                {mark.label}
-                                            </label>
-                                        </div>)}
-                                </div>
-                                <div>
-                                    {marks2.map(mark =>
-                                        <div className="form-check">
-                                            <input
-                                                disabled={true}
-                                                className="form-check-input appearance-none rounded-full h-4 w-4 border
-                                                border-gray-300 bg-white checked:bg-blue-700 checked:border-blue-700
-                                                focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat
-                                                bg-center bg-contain float-left mr-2 cursor-pointer"
-                                                type="radio" name="radio2" id={mark.id}/>
-                                            <label className="form-check-label inline-block text-gray-800"
-                                                   htmlFor={mark.id}>
-                                                {mark.label}
-                                            </label>
-                                        </div>)}
-                                </div>
+                                {toxic >= 0.5 ?
+                                    <div>
+                                        {createRadioButton(0, "Токсично", "radio1", true)}
+                                        {createRadioButton(1, "Нетоксично", "radio1", false)}
+                                    </div> :
+                                    <div>
+                                        {createRadioButton(0, "Токсично", "radio1", false)}
+                                        {createRadioButton(1, "Нетоксично", "radio1", true)}
+                                    </div>}
+
+                                {offensive >= 0.5 ?
+                                    <div>
+                                        {createRadioButton(0, "Агрессивно", "radio2", true)}
+                                        {createRadioButton(1, "Неагрессивно", "radio2", false)}
+                                    </div> :
+                                    <div>
+                                        {createRadioButton(0, "Агрессивно", "radio2", false)}
+                                        {createRadioButton(1, "Неагрессивно", "radio2", true)}
+                                    </div>}
                             </div>
                         </div>
                         <div className="px-8 py-3">
-                            <p className="text text-gray-400">Коэффициент неприличности <span className="text-blue-700 font-bold">56%</span></p>
+                            <p className="text text-gray-400">Коэффициент неприличности <span
+                                className="text-blue-700 font-bold">{Math.round((coefficient * 100)*100)/100}%</span></p>
+                        </div>
+
+                        <div className="px-8 py-3">
+                            <p className="text text-gray-400">Результат анализа  <span
+                                className="text-blue-700 font-bold">{isTotalResultToxic ? "БАН" : "НЕ БАН"}</span></p>
                         </div>
 
                     </div>
                     <div className="flex flex-row-reverse items-center px-8 py-6">
-                        <button
-                            className="rounded-full bg-pink-700 hover:bg-blue-800 text-neutral-50 px-4 py-1.5 w-32 ml-2">БАН
-                        </button>
-                        <button
-                            className="rounded-full bg-emerald-500	 hover:bg-blue-800 text-neutral-50 px-4 py-1.5 w-32 ml-2">Не БАН
-                        </button>
+                        {isTotalResultToxic ?
+                            <div>
+                                <button
+                                    onClick={onNotBanClick}
+                                    className="rounded-full bg-pink-700	hover:bg-pink-800 text-neutral-50 px-4 py-1.5 w-32 ml-2">
+                                    Не БАН
+                                </button>
+                                <button
+                                    onClick={onBanClick}
+                                    className="rounded-full bg-emerald-500 hover:bg-emerald-800 text-neutral-50 px-4 py-1.5 w-32 ml-2">БАН
+                                </button>
+                            </div> :
+                            <div>
+                                <button
+                                    onClick={onBanClick}
+                                    className="rounded-full bg-pink-700 hover:bg-pink-800 text-neutral-50 px-4 py-1.5 w-32 ml-2">БАН
+                                </button>
+                                <button
+                                    onClick={onNotBanClick}
+                                    className="rounded-full bg-emerald-500	 hover:bg-emerald-800 text-neutral-50 px-4 py-1.5 w-32 ml-2">
+                                    НE БАН
+                                </button>
+                            </div>}
+
                     </div>
 
                 </div>
