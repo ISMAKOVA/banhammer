@@ -1,3 +1,5 @@
 export const MAIN_PAGE_ROUTE = '/main'
 export const ADD_PIC_ROUTE = '/addPic'
-export const MARK_UP_ROUTE = '/markup'
+export const MARK_UP_ROUTE = '/markup/:id'
+export const SHOW_MEME = '/showMeme/:id'
+export const COMPLAIN = '/complain/:id'

@@ -3,8 +3,8 @@ import * as PropTypes from "prop-types";
 import {Grid, GridColumn} from "@progress/kendo-react-grid";
 import {Menu, MenuItem} from "@progress/kendo-react-layout";
 import { Popup } from "@progress/kendo-react-popup";
-import ComplainDialog from "../pages/complain-dialog";
-
+import ComplainPage from "../pages/complain-page";
+import {Link} from "react-router-dom";
 class GridTableComponent extends React.Component {
 
     constructor(props) {
@@ -20,7 +20,7 @@ class GridTableComponent extends React.Component {
         dialogOpen: false,
         selectedState: {},
         data: this.props.dataSource,
-        open: false,
+        open: false
     }
 
     blurTimeoutRef;
@@ -101,26 +101,25 @@ class GridTableComponent extends React.Component {
         this.blurTimeoutRef = setTimeout(this.onBlurTimeout);
     };
 
-    handleOnSelect = (e) => {
-        switch (e.item.text) {
-            case "Перейти":
-                alert("go")
-                break;
-            case "Разметить":
-                alert("размететиь")
-                break;
-            case "Пожаловаться":
-                this.getComplainComponent();
-                break;
-            default:
-        }
-        this.setState({
-            open: false,
-        });
-    };
+    // handleOnSelect = (e) => {
+    //     switch (e.item.text) {
+    //         case "Перейти":
+    //
+    //             break;
+    //         case "Разметить":
+    //             break;
+    //         case "Пожаловаться":
+    //             this.getComplainComponent();
+    //             break;
+    //         default:
+    //     }
+    //     this.setState({
+    //         open: false,
+    //     });
+    // };
 
     getComplainComponent(){
-        return <ComplainDialog id={0} visible={true}/>;
+        return <ComplainPage id={0} visible={true}/>;
     }
 
     onPopupOpen = () => {
@@ -146,11 +145,11 @@ class GridTableComponent extends React.Component {
                         <Menu
                             vertical={true}
                             style={{display: "inline-block"}}
-                            onSelect={this.handleOnSelect}
+                            // onSelect={this.handleOnSelect}
                         >
-                            <MenuItem  key={0} text="Перейти"/>
-                            <MenuItem key={1} text="Разметить"/>
-                            <MenuItem key={2} text="Пожаловаться"/>
+                            <MenuItem  key={0} text="Перейти" url={"/showMeme/0"}/>
+                            <MenuItem key={1} text="Разметить" url={"/markup/0"}/>
+                            <MenuItem key={2} text="Пожаловаться" url={"/complain/0"}/>
                         </Menu>
                     </div>
                 </Popup>

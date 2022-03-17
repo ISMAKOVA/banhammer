@@ -1,7 +1,9 @@
-import {ADD_PIC_ROUTE, MAIN_PAGE_ROUTE, MARK_UP_ROUTE} from "../utils/routeName";
+import {ADD_PIC_ROUTE, MAIN_PAGE_ROUTE, MARK_UP_ROUTE,SHOW_MEME, COMPLAIN} from "../utils/routeName";
 import MainPage from "../pages/main-page";
 import AddPicPage from "../pages/add-pic-page";
-import MarkupShowForm from "../pages/markup-show-form";
+import MarkupPage from "../pages/markup-page";
+import ShowMemePage from "../pages/show-meme-page";
+import ComplainPage from "../pages/complain-page";
 
 export const routes = [
     {
@@ -14,6 +16,14 @@ export const routes = [
     },
     {
         path: MARK_UP_ROUTE,
-        Component: MarkupShowForm
+        Component: MarkupPage
+    },
+    {
+        path: SHOW_MEME,
+        Component: ShowMemePage
+    },
+    {
+        path: COMPLAIN,
+        Component: ComplainPage
     }
 ]
