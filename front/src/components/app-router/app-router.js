@@ -4,7 +4,6 @@ import {routes} from "../../routes";
 import {MAIN_PAGE_ROUTE} from "../../utils/routeName";
 
 
-
 const AppRouter = () => {
     return (
         <Routes>

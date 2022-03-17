@@ -1,6 +1,7 @@
 import React from "react";
 import 'react-tailwind-table/dist/index.css';
 import GridTableComponent from "../components/table";
+import {getAllMemes} from "../http/memes_api";
 
 class MainPage extends React.Component{
     state = {
@@ -11,11 +12,19 @@ class MainPage extends React.Component{
         super(props);
 
         this.state = {
-            table: rows(),
+           // table: rows(),
             columns: column()
         }
     }
 
+    componentDidMount() {
+       void this.load();
+    }
+
+    async load(){
+        let memes = await getAllMemes();
+        this.setState({table: memes});
+    }
     render() {
         return(
             <div>
@@ -31,7 +40,7 @@ class MainPage extends React.Component{
 function column() {
     return [
         {
-            field: "ID",
+            field: "id",
             title: "#"
         },
         {
@@ -39,13 +48,17 @@ function column() {
             title: "Текст",
         },
         {
-            field: "link",
+            field: "img",
             title: "Ссылка",
         },
         {
-            field: "mark",
-            title: "Отметка",
-        }
+            field: "vk_route",
+            title: "ВК маршрут",
+        },
+        // {
+        //     field: "mark",
+        //     title: "Отметка",
+        // }
     ]
 }
 
