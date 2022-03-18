@@ -2,20 +2,25 @@
   background-color: rgb(241 245 249);
 }
 
-
 .k-pager-nav {
   color: rgb(75, 85, 99);
 }
 .k-menu-link-text {
+  color: rgb(55, 65, 81);
+}
+.k-menu-link-text:hover {
   color: rgb(29, 78, 216);
 }
 .k-grid {
   color: rgb(75, 85, 99);
   border-color: rgba(75, 85, 99, 0.12);
 }
-.k-grid tr.k-alt {
-  background-color: rgba(29, 78, 216, 0.05);
-}
+/*tr.k-master-row.k-alt.k-state-selected{*/
+/*  background-color: rgba(29, 78, 216, 0.5);*/
+/*}*/
+/*tr.k-master-row.k-state-selected{*/
+/*  background-color: rgba(29, 78, 216, 0.3);*/
+/*}*/
 
 .k-grid-header {
   color: rgb(75, 85, 99);

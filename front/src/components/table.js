@@ -12,7 +12,7 @@ class GridTableComponent extends React.Component {
 
     state = {
         skip: 0,
-        take: 10,
+        take: 5,
         selected: null,
         hasChanges: false,
         editIndex: null,
@@ -48,6 +48,7 @@ class GridTableComponent extends React.Component {
         editorForm: null,
         model: {},
         dataSource: [],
+        columns: []
     }
 
     rowRender = (trElement, dataItem) => {
@@ -73,6 +74,7 @@ class GridTableComponent extends React.Component {
         this.offset = { left: e.clientX, top: e.clientY };
         this.setState({
             open: true,
+            selected: this.dataItem
         });
     };
 
@@ -94,29 +96,7 @@ class GridTableComponent extends React.Component {
         this.blurTimeoutRef = setTimeout(this.onBlurTimeout);
     };
 
-    // handleOnSelect = (e) => {
-    //     switch (e.item.text) {
-    //         case "Перейти":
-    //
-    //             break;
-    //         case "Разметить":
-    //             break;
-    //         case "Пожаловаться":
-    //             this.getComplainComponent();
-    //             break;
-    //         default:
-    //     }
-    //     this.setState({
-    //         open: false,
-    //     });
-    // };
-
-    getComplainComponent(){
-        return <ComplainPage id={0} visible={true}/>;
-    }
-
     onPopupOpen = () => {
-        debugger
         this.menuWrapperRef.querySelector("[tabindex]").focus();
     };
 
@@ -131,7 +111,7 @@ class GridTableComponent extends React.Component {
                     offset={this.offset}
                     show={this.state.open}
                     open={this.onPopupOpen}
-                    popupClass={"popup-content"}
+                    popupClass={"popup-content rounded overflow-hidden ps-2"}
                 >
                     <div
                         onFocus={this.onFocusHandler}
@@ -141,11 +121,13 @@ class GridTableComponent extends React.Component {
                     >
                         <Menu
                             vertical={true}
+                            className="pl-2"
                             style={{display: "inline-block"}}
                         >
-                            <MenuItem  key={0} text="Перейти" url={"/showMeme/"+ this.state.selected?.id}/>
+                            <MenuItem key={0} text="Перейти" url={"/showMeme/"+ this.state.selected?.id}/>
                             <MenuItem key={1} text="Разметить" url={"/markup/"+ this.state.selected?.id}/>
-                            <MenuItem key={2} text="Пожаловаться" url={"/complain/0"+ this.state.selected?.id}/>
+                            {this.state.selected?.mark_result>=0.5?
+                            <MenuItem key={2} text="Пожаловаться" url={"/complain/"+ this.state.selected?.id}/>:null}
                         </Menu>
                     </div>
                 </Popup>
@@ -156,7 +138,7 @@ class GridTableComponent extends React.Component {
                     take={this.state.take}
                     total={this.state.data.length}
                     pageable={true}
-                    dataItemKey={'ID'}
+                    dataItemKey={'id'}
                     selectedField={'SELECTION_KEY'}
                     selectable={{enabled: true, mode: 'single'}}
                     onSelectionChange={this.onSelectionChange}
@@ -167,7 +149,7 @@ class GridTableComponent extends React.Component {
                     ).map(item=> ({...item,SELECTION_KEY: this.state.selected?.id===item.id}))}
 
                     onPageChange={this.pageChange}>
-                    {this.props.columns.map(col => {
+                    {this.props?.columns.map(col => {
                         return (<GridColumn key={col.field + "|" + col.field} title={col.title} field={col.field}
                                             width={col.width ?? 'auto'}/>)
                     })}

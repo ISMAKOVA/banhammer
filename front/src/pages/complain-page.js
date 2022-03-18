@@ -82,7 +82,8 @@ export default function ComplainPage() {
                     <textarea
                         value={complainText}
                         onChange={e => setComplainText(e.target.value)}
-                        className="w-full rounded-3xl bg-gray-200 text-sm px-6 py-10 resize-none hover:resize text-gray-700"
+                        style={{minHeight: "200px"}}
+                        className="w-full rounded-3xl bg-gray-200 text-sm px-6 py-2 resize-none hover:resize text-gray-700"
                         placeholder="Текст">
                                 </textarea>
                 </div>

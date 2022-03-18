@@ -1,32 +1,30 @@
-const {Meme_Mark} = require('../models/models')
+const {Meme_Mark, Meme} = require('../models/models')
 const ApiError = require('../error/ApiError')
 
 class Meme_markController {
-    async create(req, res){
+    async create(req, res) {
         try {
             const {mark, memeId} = req.body
             const meme_mark = await Meme_Mark.create({mark: mark, memeId: memeId})
             return res.json({meme_mark})
-        }
-        catch (e) {
+        } catch (e) {
             console.log(e);
             new ApiError(e.status, e.message)
         }
     }
 
-    async getAll(req, res){
+    async getAll(req, res) {
         const {memeId} = req.query
         let meme_mark
-        if(memeId){
-            meme_mark = await Meme_Mark.findAll({where:{memeId:memeId}})
-        }
-        else {
+        if (memeId) {
+            meme_mark = await Meme_Mark.findAll({where: {memeId: memeId}})
+        } else {
             meme_mark = await Meme_Mark.findAll()
         }
         return res.json(meme_mark)
     }
 
-    async getOne(req, res){
+    async getOne(req, res) {
         const {id} = req.params
         const meme_mark = await Meme_Mark.findOne(
             {where: {id}},
@@ -34,17 +32,24 @@ class Meme_markController {
         return res.json(meme_mark)
     }
 
-    async getSummarizedMarkForMeme(req, res){
-        const {memeId} = req.query
-        const meme_marks = await Meme_Mark.findAll(
-            {where: {memeId:memeId}},
-        )
-        let sum = 0
-        for(let i in meme_marks){
-            sum += Number(meme_marks[i].mark)
+    async getSummarizedMarkForMeme(req, res) {
+        try {
+            const {memeId} = req.params
+            const meme_marks = await Meme_Mark.findAll(
+                {where: {memeId: memeId}},
+            )
+            const meme = await (await Meme.findOne({where: {id:memeId}},))
+
+            let sum = 0
+            for (let i in meme_marks) {
+                sum += Number(meme_marks[i]?.mark)
+            }
+            let result = sum / meme_marks?.length
+            return res.json({id:meme.id, img: meme.img, vk_route: meme.vk_route, text: meme.text, mark_result: isNaN(result)? 0: result})
+        } catch (e) {
+            console.log(e);
+            new ApiError(e.status, e.message)
         }
-        let result = sum / meme_marks.length
-        return res.json(result)
     }
 
     async delete(req, res) {
@@ -64,4 +69,5 @@ class Meme_markController {
         }
     }
 }
+
 module.exports = new Meme_markController()

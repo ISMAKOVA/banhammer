@@ -13,7 +13,7 @@ export const getAllMemeMarks = async () =>{
 
 export const getSummarizedForMeme = async (memeId) =>{
     //const {data} = await $host.get('/api/meme_mark/?memeId='+memeId);
-    const {data} = await $host.get('/api/meme_mark/getSummarized/?memeId='+memeId);
+    const {data} = await $host.get('/api/meme_mark/getSummarized/'+memeId);
     return data;
 }
 

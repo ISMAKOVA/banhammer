@@ -49,7 +49,7 @@ export class SystemPagesTemplate extends React.Component {
                     <Disclosure as="nav" className="">
                         {({open}) => (
                             <>
-                                <div className="max-w-7xl mx-auto px-12 sm:px-4 lg:px-14">
+                                <div className="max-w-screen-xl mx-auto px-12 sm:px-4 lg:px-14">
                                     <div className="flex flex-row-reverse items-center space-x-4 pt-6 justify-between px-6">
                                        <Link to={'main'} onClick={this.updateCurrent} className="px-8 py-8 order-last bg-blue-700 rounded-full blur-sm"> </Link>
                                         <div>
@@ -97,12 +97,12 @@ export class SystemPagesTemplate extends React.Component {
                     </Disclosure>
 
                     <header className="bg-neomorphic-blue px-12 pt-12">
-                        <div className="max-w-7xl mx-auto px-8">
+                        <div className="max-w-screen-xl mx-auto px-8">
                             <h1 className="text-2xl font-bold text-gray-600">{this.getCurrent()?.name}</h1>
                         </div>
                     </header>
-                    <main className='h-full bg-neomorphic-blue mb-auto'>
-                        <div className="h-full max-w-7xl mx-auto py-2 sm:px-6 lg:px-8">
+                    <main className='grow bg-neomorphic-blue mb-auto'>
+                        <div className="max-w-screen-xl mx-auto py-2 sm:px-6 lg:px-8">
                             {this.props.children}
                         </div>
                     </main>

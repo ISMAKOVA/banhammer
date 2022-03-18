@@ -2,41 +2,46 @@ import React from "react";
 import 'react-tailwind-table/dist/index.css';
 import GridTableComponent from "../components/table";
 import {getAllMemes} from "../http/memes_api";
+import {getSummarizedForMeme} from "../http/memes_marks_api";
 
-class MainPage extends React.Component{
+class MainPage extends React.Component {
     state = {
         table: [],
         columns: []
     }
+
     constructor(props) {
         super(props);
 
         this.state = {
-            table: rows(),
+            // table: rows(),
             columns: column()
         }
     }
 
-    // componentDidMount() {
-    //    void this.load();
-    // }
-    //
-    // async load(){
-    //     let memes = await getAllMemes();
-    //     // let values = Object.keys(memes).map(function(key){
-    //     //     return memes[key];
-    //     // });
-    //     this.setState({table: memes});
-    //     console.log(memes)
-    // }
+    componentWillMount() {
+        void this.load();
+    }
+
+    async load() {
+        let memes = await getAllMemes();
+
+        const marks = await this.getMarks(memes);
+        this.setState({table: marks});
+    }
+
+    getMarks = async (memes) => {
+        return Promise.all(memes.map(data => getSummarizedForMeme(data.id)))
+    }
 
     render() {
-        return(
+        return (
             <div>
-                <GridTableComponent
-                    columns={this.state.columns}
-                    dataSource={this.state.table}>
-                </GridTableComponent>
+                {this.state.table ?
+                    <GridTableComponent
+                        columns={this.state?.columns}
+                        dataSource={this.state?.table}>
+                    </GridTableComponent> : null}
             </div>
         )
     }
@@ -60,14 +65,14 @@ function column() {
             field: "vk_route",
             title: "ВК маршрут",
         },
-        // {
-        //     field: "mark",
-        //     title: "Отметка",
-        // }
+        {
+            field: "mark_result",
+            title: "Отметка",
+        }
     ]
 }
 
-function rows(){
+function rows() {
     return [
         {
             id: 0,
@@ -75,7 +80,7 @@ function rows(){
             text: "www.ff.com",
             vk_route: "asdfasdfaadsfa",
             createdAt: "adsf",
-            updatedAt:"adsfsdf"
+            updatedAt: "adsfsdf"
         },
         {
             id: 1,
@@ -83,7 +88,7 @@ function rows(){
             text: "www.ff.com",
             vk_route: "asdfasdfaadsfa",
             createdAt: "adsf",
-            updatedAt:"adsfsdf"
+            updatedAt: "adsfsdf"
         },
         {
             id: 2,
@@ -91,7 +96,7 @@ function rows(){
             text: "www.ff.com",
             vk_route: "asdfasdfaadsfa",
             createdAt: "adsf",
-            updatedAt:"adsfsdf"
+            updatedAt: "adsfsdf"
         },
         {
             id: 3,
@@ -99,7 +104,7 @@ function rows(){
             text: "www.ff.com",
             vk_route: "asdfasdfaadsfa",
             createdAt: "adsf",
-            updatedAt:"adsfsdf"
+            updatedAt: "adsfsdf"
         },
         {
             id: 4,
@@ -107,7 +112,7 @@ function rows(){
             text: "www.ff.com",
             vk_route: "asdfasdfaadsfa",
             createdAt: "adsf",
-            updatedAt:"adsfsdf"
+            updatedAt: "adsfsdf"
         },
         {
             id: 5,
@@ -115,7 +120,7 @@ function rows(){
             text: "www.ff.com",
             vk_route: "asdfasdfaadsfa",
             createdAt: "adsf",
-            updatedAt:"adsfsdf"
+            updatedAt: "adsfsdf"
         },
         {
             id: 6,
@@ -123,7 +128,7 @@ function rows(){
             text: "www.ff.com",
             vk_route: "asdfasdfaadsfa",
             createdAt: "adsf",
-            updatedAt:"adsfsdf"
+            updatedAt: "adsfsdf"
         },
         {
             id: 7,
@@ -131,9 +136,10 @@ function rows(){
             text: "www.ff.com",
             vk_route: "asdfasdfaadsfa",
             createdAt: "adsf",
-            updatedAt:"adsfsdf"
+            updatedAt: "adsfsdf"
         },
 
     ]
 }
+
 export default MainPage;
