@@ -38,7 +38,7 @@ function MarkupPage() {
 
         setSpinner(false);
     }
-    const createRadioButton = (id, label, name, checked = false, disabled = true) => {
+    const createRadioButton = (id, label, name, checked = false, value, disabled = true) => {
         return <div className="form-check">
             <input
                 disabled={disabled}
@@ -51,6 +51,8 @@ function MarkupPage() {
             <label className="form-check-label inline-block text-gray-800"
                    htmlFor={id}>
                 {label}
+                {value>=50? <span className="text-blue-700 font-bold"> {Math.round(value*100)/100}%</span>:
+                    <span className=""> {Math.round(value*100)/100}%</span>}
             </label>
         </div>
     }
@@ -101,7 +103,7 @@ function MarkupPage() {
                                         {spinner ?
                                             <div className=" flex justify-center items-center">
                                                 <div
-                                                    className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-700"></div>
+                                                    className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-700"> </div>
                                             </div> : null}
                                     </div>
 
@@ -113,22 +115,22 @@ function MarkupPage() {
                                             <div className="flex flex-row gap-4 flex-wrap">
                                                 {toxic >= 0.5 ?
                                                     <div>
-                                                        {createRadioButton(0, "Токсично", "radio1", true)}
-                                                        {createRadioButton(1, "Нетоксично", "radio1", false)}
+                                                        {createRadioButton(0, "Токсично", "radio1", true, toxic*100)}
+                                                        {createRadioButton(1, "Нетоксично", "radio1", false, (1-toxic)*100)}
                                                     </div> :
                                                     <div>
-                                                        {createRadioButton(0, "Токсично", "radio1", false)}
-                                                        {createRadioButton(1, "Нетоксично", "radio1", true)}
+                                                        {createRadioButton(0, "Токсично", "radio1", false, toxic*100)}
+                                                        {createRadioButton(1, "Нетоксично", "radio1", true,(1-toxic)*100 )}
                                                     </div>}
 
                                                 {offensive >= 0.5 ?
                                                     <div>
-                                                        {createRadioButton(0, "Агрессивно", "radio2", true)}
-                                                        {createRadioButton(1, "Неагрессивно", "radio2", false)}
+                                                        {createRadioButton(0, "Агрессивно", "radio2", true, offensive*100)}
+                                                        {createRadioButton(1, "Неагрессивно", "radio2", false, unoffensive*100)}
                                                     </div> :
                                                     <div>
-                                                        {createRadioButton(0, "Агрессивно", "radio2", false)}
-                                                        {createRadioButton(1, "Неагрессивно", "radio2", true)}
+                                                        {createRadioButton(0, "Агрессивно", "radio2", false, offensive*100)}
+                                                        {createRadioButton(1, "Неагрессивно", "radio2", true, unoffensive*100)}
                                                     </div>}
                                             </div>
                                         </div>

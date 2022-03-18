@@ -41,7 +41,13 @@ class MainPage extends React.Component {
                     <GridTableComponent
                         columns={this.state?.columns}
                         dataSource={this.state?.table}>
-                    </GridTableComponent> : null}
+                    </GridTableComponent> :
+                    <div className="px-8 pt-4">
+                        <div className=" flex justify-center items-center">
+                            <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-700"></div>
+                        </div>
+                    </div>}
+
             </div>
         )
     }
@@ -51,7 +57,8 @@ function column() {
     return [
         {
             field: "id",
-            title: "#"
+            title: "#",
+            width: "60px"
         },
         {
             field: "text",
@@ -68,6 +75,7 @@ function column() {
         {
             field: "mark_result",
             title: "Отметка",
+            width: "100px"
         }
     ]
 }

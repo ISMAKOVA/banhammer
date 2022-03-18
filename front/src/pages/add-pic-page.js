@@ -8,19 +8,23 @@ function AddPicPage() {
     const [vkRoute, setVkRoute] = useState('');
     const [textVk, setTextVk] = useState('');
     const [spinner, setSpinner] = useState(false);
+    const [urlValidation, setUrlValidation] = useState(false);
     const navigate = useNavigate();
 
-    // const [rightUrl, setRightUrl] = useState('');
-    //
-    // const onUrlChange = (value) => {
-    //     debugger
-    //     setUrl(value);
-    //     const rgx = new RegExp('/(href|src)\s*=\s*"([^\s]+\/\/[^\/]+.\/[^\s]+\.(jpg|jpeg|png|gif|bmp))/ixu');
-    //     const result = rgx.test(value);
-    //     if (result){
-    //        setRightUrl(value)
-    //     }
-    // }
+    const [rightUrl, setRightUrl] = useState('');
+
+    const onUrlChange = (value) => {
+        setUrl(value);
+        const rgx = new RegExp('(http(s?):)([/|.|\\w|\\s|-])*\\.(?:jpg|gif|png|jpeg)', 'i');
+        const result = rgx.test(value);
+        if (result){
+            setRightUrl(value)
+            setUrlValidation(true)
+        }
+        else{
+            setUrlValidation(false)
+        }
+    }
     const getTextFromImg = async () => {
         setSpinner(true);
         setText('');
@@ -50,32 +54,31 @@ function AddPicPage() {
                                 <div className="text-sm mb-2 text-gray-500">URL мема</div>
                                 <input
                                     value={url}
-                                    onChange={e => setUrl(e.target.value)}
+                                    // onChange={e => setUrl(e.target.value)}
+                                    onChange={e => onUrlChange(e.target.value)}
                                     className="w-full grow rounded-3xl bg-gray-200 text-sm px-6 py-2 resize-none hover:resize mr-2 box-border"
                                     placeholder="Мем URL">
                                 </input>
+                                <p className="text-sm text-red-500 pt-1"> {!urlValidation? "Проверьте корректность введенного URL": ""} </p>
                             </div>
                             <div className="px-8 pt-4">
-                                {!url ?
+                                {!urlValidation ?
                                     <div
                                         className="w-full bg-gradient-to-r from-blue-700 to-indigo-500 rounded-3xl text-center text-white"
                                         style={{height: "300px", paddingTop: "145px"}}> Картинка
                                     </div> :
-                                    <img className="w-full" src={url} alt={"Картинка"} height={300}/>}
+                                    <img className="w-full" src={rightUrl} alt={"Картинка"} height={300}/>}
                             </div>
                             <div className="px-8 pt-4">
                                 <button
                                     onClick={getTextFromImg}
                                     className="w-full rounded-full hover:bg-blue-800 bg-gradient-to-r from-blue-700 to-indigo-500  text-neutral-50 px-4 py-1.5 ">
-                                    Получить текст с картинки
+                                    <span className="flex justify-center items-center gap-2">
+                                        <span>Получить текст с картинки</span>
+                                        {spinner ? <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-neutral-50"> </span>: null}
+                                    </span>
                                 </button>
                             </div>
-                            {spinner ?
-                                <div className="px-8 pt-4">
-                                    <div className=" flex justify-center items-center">
-                                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-700"></div>
-                                    </div>
-                                </div> : null}
                         </div>
                             <div className="flex flex-col md:pb-6">
 
@@ -112,7 +115,7 @@ function AddPicPage() {
                                     </div>
                                 </div> : null}
 
-                            <div className="flex flex-row-reverse items-center px-8 py-6">
+                            <div className="flex flex-row-reverse items-center px-8 pt-6">
                                 <button
                                     onClick={onSave}
                                     className="rounded-full bg-blue-700 hover:bg-blue-800 text-neutral-50 px-4 py-1.5 w-full">Сохранить
