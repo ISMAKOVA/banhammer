@@ -1,5 +1,4 @@
 import React, {Fragment, useEffect, useState} from "react";
-import * as PropTypes from "prop-types";
 import {useNavigate, useParams} from "react-router-dom";
 import {classifyBySomeText, classifyByToxicText, classifyPicInMeme, getOneMeme} from "../http/memes_api";
 import {createMemeMark} from "../http/memes_marks_api";
@@ -81,7 +80,7 @@ function MarkupPage() {
                                 <img className="w-full h-5/6 " src={img} alt={"Картинка"}/>}
                         </div>
 
-                        <div className="flex flex-col">
+                        <div className="flex flex-col w-2/5">
                             <div className="px-8 py-4 grow">
                                 <div className="text-sm mb-2 text-gray-400">Текст мема</div>
                                 <textarea
@@ -98,13 +97,12 @@ function MarkupPage() {
                                     <div className="flex flex-row gap-2">
                                         <button
                                             onClick={autoClassification}
-                                            className="rounded-full bg-blue-700 hover:bg-blue-800 text-neutral-50 px-4 py-1.5">Автоклассификация
+                                            className="rounded-full bg-blue-700 hover:bg-blue-800 text-neutral-50 px-4 py-1.5 grow">
+                                            <span className="flex justify-center items-center gap-2">
+                                        {spinner ? <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-neutral-50"> </span>: null}
+                                                {spinner ? <span> Классифицируем...</span> : <span>Автоклассификация</span>}
+                                    </span>
                                         </button>
-                                        {spinner ?
-                                            <div className=" flex justify-center items-center">
-                                                <div
-                                                    className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-700"> </div>
-                                            </div> : null}
                                     </div>
 
                                 </div>

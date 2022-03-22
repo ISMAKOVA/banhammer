@@ -54,12 +54,11 @@ function AddPicPage() {
                                 <div className="text-sm mb-2 text-gray-500">URL мема</div>
                                 <input
                                     value={url}
-                                    // onChange={e => setUrl(e.target.value)}
                                     onChange={e => onUrlChange(e.target.value)}
                                     className="w-full grow rounded-3xl bg-gray-200 text-sm px-6 py-2 resize-none hover:resize mr-2 box-border"
                                     placeholder="Мем URL">
                                 </input>
-                                <p className="text-sm text-red-500 pt-1"> {!urlValidation? "Проверьте корректность введенного URL": ""} </p>
+                                <p className="text-sm text-gray-500 pt-1"> {!urlValidation? "Введите URL в формате: https:...image.jpg/png/...": ""} </p>
                             </div>
                             <div className="px-8 pt-4">
                                 {!urlValidation ?
@@ -74,11 +73,12 @@ function AddPicPage() {
                                     onClick={getTextFromImg}
                                     className="w-full rounded-full hover:bg-blue-800 bg-gradient-to-r from-blue-700 to-indigo-500  text-neutral-50 px-4 py-1.5 ">
                                     <span className="flex justify-center items-center gap-2">
-                                        <span>Получить текст с картинки</span>
                                         {spinner ? <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-neutral-50"> </span>: null}
+                                        {spinner ? <span> Считываем текст с картинки...</span> : <span>Получить текст с картинки</span>}
                                     </span>
                                 </button>
                             </div>
+
                         </div>
                             <div className="flex flex-col md:pb-6">
 

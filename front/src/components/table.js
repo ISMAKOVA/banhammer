@@ -3,16 +3,24 @@ import * as PropTypes from "prop-types";
 import {Grid, GridColumn} from "@progress/kendo-react-grid";
 import {Menu, MenuItem} from "@progress/kendo-react-layout";
 import { Popup } from "@progress/kendo-react-popup";
-import ComplainPage from "../pages/complain-page";
 class GridTableComponent extends React.Component {
 
     constructor(props) {
         super(props)
     }
 
+    componentDidMount() {
+        document
+            .addEventListener('click', this.closeContextMenu);
+    }
+    componentWillUnmount(){
+        document
+            .removeEventListener('click', this.closeContextMenu);
+    }
+
     state = {
         skip: 0,
-        take: 5,
+        take: 10,
         selected: null,
         hasChanges: false,
         editIndex: null,
@@ -65,7 +73,9 @@ class GridTableComponent extends React.Component {
             trElement.props.children
         );
     };
-
+    closeContextMenu = () =>{
+        this.setState({open: false})
+    }
     handleContextMenuOpen = (e, dataItem) => {
         this.dataItem = dataItem;
         this.dataItemIndex = this.state.data.findIndex(
@@ -91,7 +101,7 @@ class GridTableComponent extends React.Component {
         this.blurTimeoutRef = undefined;
     };
 
-    onBlurHandler = (event) => {
+    onBlurHandler = () => {
         clearTimeout(this.blurTimeoutRef);
         this.blurTimeoutRef = setTimeout(this.onBlurTimeout);
     };
